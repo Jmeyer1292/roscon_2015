@@ -48,17 +48,18 @@ def generateLemniscatePoints():
     #print "omega array: %s"%(str(omega))
     #print "x array: %s"%(str(x))
     #print "z array: %s"%(str(z))
-    axis_size = 1.2*ro
-    ax.plot(x, y, z, label='parametric curve',marker='.',color='yellow', linestyle='dashed',markerfacecolor='blue')
-    ax.legend()
-    ax.set_xlabel('X')
-    ax.set_xlim(-axis_size, axis_size)
-    ax.set_ylabel('Y')
-    ax.set_ylim(-axis_size, axis_size)
-    ax.set_zlabel('Z')
-    ax.set_zlim(-axis_size, axis_size)
+    for u in range(0, len(omega)):
+        axis_size = 1.2*ro
+        ax.plot(x, y, z, label='parametric curve',marker='.',color='yellow', linestyle='dashed',markerfacecolor='blue')
+        ax.legend()
+        ax.set_xlabel('X')
+        ax.set_xlim(-axis_size, axis_size)
+        ax.set_ylabel('Y')
+        ax.set_ylim(-axis_size, axis_size)
+        ax.set_zlabel('Z')
+        ax.set_zlim(-axis_size, axis_size)
 
-    pyplot.show()
+        pyplot.show()
 
 
 if __name__ == "__main__":

@@ -46,7 +46,17 @@
     <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
     <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />
 
-	  <node name="ur_driver" pkg="ur_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen" />
+	  <node name="ur_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
+    <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
+      <param name="prefix" type="str" value="" />
+      <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+      <param name="min_payload" type="double" value="0" />
+      <param name="max_payload" type="double" value="5" />
+      <param name="max_velocity" type="double" value="10" />
+      <param name="servoj_time" type="double" value="0.008" />
+      <param name="base_frame" type="str" value="base_link"/>
+      <param name="tool_frame" type="str" value="tool0_controller"/>
+  </node>
 
 	  <!-- TF Buffer Server -->
 	  <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">

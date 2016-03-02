@@ -12,6 +12,25 @@
 
 */
 
+void addVel(trajectory_msgs::JointTrajectory& traj)
+{
+  if (traj.points.size() < 3) return;
+
+  auto n_joints = traj.points.front().positions.size();
+
+  for (auto i = 0; i < n_joints; ++i)
+  {
+    for (auto j = 1; j < traj.points.size() - 1; j++)
+    {
+      // For each point in a given joint
+      double delta_theta = -traj.points[j - 1].positions[i] + traj.points[j + 1].positions[i];
+      double delta_time = -traj.points[j - 1].time_from_start.toSec() + traj.points[j + 1].time_from_start.toSec();
+      double v = delta_theta / delta_time;
+      traj.points[j].velocities[i] = v;
+    } 
+  }
+}
+
 namespace plan_and_run
 {
 
@@ -53,6 +72,10 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   // creating Moveit trajectory from Descartes Trajectory
   moveit_msgs::RobotTrajectory moveit_traj;
   fromDescartesToMoveitTrajectory(path,moveit_traj.joint_trajectory);
+  addVel(moveit_traj.joint_trajectory);
+
+  // Filter the trajcetory & add velocities
+
 
   // sending robot path to server for execution
   /*  Fill Code:
